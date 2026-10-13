@@ -1,0 +1,162 @@
+# 手机 Clash 精简版（原版 Clash / Clash Meta 都能导入）
+# 已去掉 nameserver-policy 列表、anytls/hysteria2/tuic/reality、链式落地
+port: 7890
+socks-port: 7891
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+    - 223.5.5.5
+    - 8.8.8.8
+  fallback:
+    - 1.1.1.1
+    - 8.8.8.8
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+
+proxies:
+  - name: 香港1
+    type: vmess
+    server: goldcnmltyljgfwgov.vip52.wogcnmnnagfwgov.com
+    port: 11252
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 香港3
+    type: vmess
+    server: silversbgfgov.vip26.wogbcnmnagfwgov.com
+    port: 11226
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 香港4
+    type: trojan
+    server: www.wto.org
+    port: 8443
+    password: ec1fa47d-4eac-4b3f-8cae-4a2982d43e2f
+    sni: jiangjc.pages.dev
+    skip-cert-verify: false
+    network: ws
+    udp: true
+    ws-opts:
+      path: /?ed=2560
+      headers:
+        Host: jiangjc.pages.dev
+  - name: 台湾3
+    type: vmess
+    server: sbgfgov.vip24.wogacnmnagfwgov.com
+    port: 11224
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 台湾4
+    type: vmess
+    server: sbgfgov.vip23.wogacnmnagfwgov.com
+    port: 11223
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 日本3
+    type: vmess
+    server: sbgfgov.vip6.wogacnmnagfwgov.com
+    port: 11206
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 日本4
+    type: vmess
+    server: sbgfgov.vip7.wogacnmnagfwgov.com
+    port: 11207
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 美国95
+    type: vmess
+    server: sbgfgov.vip21.wogacnmnagfwgov.com
+    port: 11221
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 美国93
+    type: vmess
+    server: goldcnmltyljgfwgov.vip67.wogcnmnnagfwgov.com
+    port: 11267
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 英国1
+    type: vmess
+    server: silversbgfgov.vip45.wogbcnmnagfwgov.com
+    port: 11245
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+  - name: 菲律宾1
+    type: vmess
+    server: silversbgfgov.vip44.wogbcnmnagfwgov.com
+    port: 11244
+    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
+    alterId: 2
+    cipher: auto
+    udp: true
+
+proxy-groups:
+  - name: 节点选择
+    type: select
+    proxies:
+      - 自动选择
+      - 香港1
+      - 香港3
+      - 香港4
+      - 台湾3
+      - 台湾4
+      - 日本3
+      - 日本4
+      - 美国95
+      - 美国93
+      - 英国1
+      - 菲律宾1
+      - DIRECT
+  - name: 自动选择
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    proxies:
+      - 香港1
+      - 香港3
+      - 香港4
+      - 台湾3
+      - 台湾4
+      - 日本3
+      - 日本4
+      - 美国95
+      - 美国93
+      - 英国1
+      - 菲律宾1
+
+rules:
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT
+  - MATCH,节点选择
