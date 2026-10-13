@@ -1,5 +1,4 @@
-# 手机 Clash 精简版（原版 Clash / Clash Meta 都能导入）
-# 已去掉 nameserver-policy 列表、anytls/hysteria2/tuic/reality、链式落地
+# 手机 Clash 精简版（已实测可出网）
 port: 7890
 socks-port: 7891
 allow-lan: false
@@ -10,57 +9,57 @@ ipv6: false
 dns:
   enable: true
   ipv6: false
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
+  enhanced-mode: redir-host
   nameserver:
     - 223.5.5.5
     - 8.8.8.8
-  fallback:
-    - 1.1.1.1
-    - 8.8.8.8
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
 
 proxies:
-  - name: 香港1
-    type: vmess
-    server: goldcnmltyljgfwgov.vip52.wogcnmnnagfwgov.com
-    port: 11252
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 香港3
-    type: vmess
-    server: silversbgfgov.vip26.wogbcnmnagfwgov.com
-    port: 11226
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 香港4
+  - name: 香港
     type: trojan
     server: www.wto.org
     port: 8443
     password: ec1fa47d-4eac-4b3f-8cae-4a2982d43e2f
     sni: jiangjc.pages.dev
-    skip-cert-verify: false
+    skip-cert-verify: true
     network: ws
     udp: true
     ws-opts:
       path: /?ed=2560
       headers:
         Host: jiangjc.pages.dev
-  - name: 台湾3
+  - name: 日本
     type: vmess
-    server: sbgfgov.vip24.wogacnmnagfwgov.com
-    port: 11224
+    server: silversbgfgov.vip30.wogbcnmnagfwgov.com
+    port: 11230
     uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
     alterId: 2
     cipher: auto
     udp: true
-  - name: 台湾4
+  - name: 新加坡
+    type: http
+    server: 146.70.29.45
+    port: 443
+    username: testuser1
+    password: e4b72b531a2d10900519
+    tls: true
+    sni: 92461d2d.acsnet.co
+    skip-cert-verify: true
+  - name: 韩国
+    type: socks5
+    server: 121.169.46.116
+    port: 1090
+    username: VDJjbE0wUWxNMFE2Og%3D%3D
+    udp: true
+  - name: 荷兰
+    type: http
+    server: 84.17.47.147
+    port: 9002
+    password: None
+    tls: true
+    sni: 84.17.47.147
+    skip-cert-verify: true
+  - name: 台湾
     type: vmess
     server: sbgfgov.vip23.wogacnmnagfwgov.com
     port: 11223
@@ -68,50 +67,10 @@ proxies:
     alterId: 2
     cipher: auto
     udp: true
-  - name: 日本3
-    type: vmess
-    server: sbgfgov.vip6.wogacnmnagfwgov.com
-    port: 11206
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 日本4
-    type: vmess
-    server: sbgfgov.vip7.wogacnmnagfwgov.com
-    port: 11207
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 美国95
+  - name: 美国
     type: vmess
     server: sbgfgov.vip21.wogacnmnagfwgov.com
     port: 11221
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 美国93
-    type: vmess
-    server: goldcnmltyljgfwgov.vip67.wogcnmnnagfwgov.com
-    port: 11267
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 英国1
-    type: vmess
-    server: silversbgfgov.vip45.wogbcnmnagfwgov.com
-    port: 11245
-    uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
-    alterId: 2
-    cipher: auto
-    udp: true
-  - name: 菲律宾1
-    type: vmess
-    server: silversbgfgov.vip44.wogbcnmnagfwgov.com
-    port: 11244
     uuid: 605956ee-544d-308e-8b90-51e67c6ea8da
     alterId: 2
     cipher: auto
@@ -122,35 +81,25 @@ proxy-groups:
     type: select
     proxies:
       - 自动选择
-      - 香港1
-      - 香港3
-      - 香港4
-      - 台湾3
-      - 台湾4
-      - 日本3
-      - 日本4
-      - 美国95
-      - 美国93
-      - 英国1
-      - 菲律宾1
+      - 香港
+      - 日本
+      - 新加坡
+      - 韩国
+      - 荷兰
+      - 台湾
+      - 美国
       - DIRECT
   - name: 自动选择
     type: url-test
     url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
+    interval: 180
+    tolerance: 80
     proxies:
-      - 香港1
-      - 香港3
-      - 香港4
-      - 台湾3
-      - 台湾4
-      - 日本3
-      - 日本4
-      - 美国95
-      - 美国93
-      - 英国1
-      - 菲律宾1
+      - 香港
+      - 日本
+      - 新加坡
+      - 韩国
+      - 荷兰
 
 rules:
   - DOMAIN-SUFFIX,local,DIRECT
